@@ -1,16 +1,21 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+# log_format ui_short '$remote_addr  $remote_user $http_x_real_ip [$time_local] "$request" '
+#                     '$status $body_bytes_sent "$http_referer" '
+#                     '"$http_user_agent" "$http_x_forwarded_for" "$http_X_REQUEST_ID" "$http_X_RB_USER" '
+#                     '$request_time';
+
+config = {
+    "REPORT_SIZE": 1000,
+    "REPORT_DIR": "./reports",
+    "LOG_DIR": "./log"
+}
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+def main():
+    pass
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+if __name__ == "__main__":
+    main()
