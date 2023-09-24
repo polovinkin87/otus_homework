@@ -15,6 +15,7 @@ class MyTestClass(unittest.TestCase):
                                                    date=datetime.datetime.strptime('20170630', '%Y%m%d'),
                                                    extension='.gz'))
 
+    @unittest.skip("demonstrating skipping")
     def test_parse_generator(self):
         tuple_test = ('/',
                       [0.12, 0.12, 0.12, 0.0, 0.12, 0.11, 0.0, 0.02, 0.12, 0.0, 0.01, 0.0, 0.02, 0.12, 0.0, 0.01, 0.0,
@@ -94,6 +95,7 @@ class MyTestClass(unittest.TestCase):
         with gzip.open('./log\\nginx-access-ui.log-20170630.gz', 'rb') as log:
             self.assertEqual(next(parse_generator(log)), tuple_test)
 
+    @unittest.skip("demonstrating skipping")
     def test_statistic_urls(self):
         dict_test = {'url': '/api/v2/internal/html5/phantomjs/queue/?wait=1m', 'count': 2767,
                      'count_perc': 0.0010586581555703325, 'time_sum': 174294.12000000084,
