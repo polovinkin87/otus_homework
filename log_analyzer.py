@@ -10,8 +10,8 @@ from collections import namedtuple
 from itertools import groupby
 from statistics import mean, median
 from string import Template
-import yaml
 import logging
+import yaml
 
 # log_format ui_short '$remote_addr  $remote_user $http_x_real_ip [$time_local] "$request" '
 #                     '$status $body_bytes_sent "$http_referer" '
@@ -24,15 +24,18 @@ config = {
     "LOG_DIR": "./log"
 }
 
-with open("./config/config.yaml", "r", encoding="utf-8") as f:
-    config_file = yaml.safe_load(f)
-    config_file = config_file["constants"]
-
-config.update(config_file)
-
-if config["LOG_FILE"]:
-    logging.basicConfig(level=logging.INFO, filename=os.path.join(config["LOG_FILE"], "log_analyzer.log"),
-                        format="[%(asctime)s] %(levelname).1s %(message)s")
+if os.listdir("./config"):
+    try:
+        with open("./config/config.yaml", "r", encoding="utf-8") as f:
+            config_file = yaml.safe_load(f)
+            config_file = config_file["constants"]
+        config.update(config_file)
+        logging.basicConfig(level=logging.INFO, filename=os.path.join(config["LOG_FILE"], "log_analyzer.log"),
+                            format="[%(asctime)s] %(levelname).1s %(message)s")
+    except KeyError:
+        logging.error("KeyError")
+    except EOFError:
+        logging.error("EOFError")
 else:
     logging.basicConfig(level=logging.INFO, filename=None,
                         format="[%(asctime)s] %(levelname).1s %(message)s")
@@ -61,8 +64,6 @@ def search_log(config):
         logging.error("ValueError")
     except IndexError:
         logging.error("IndexError")
-    except Exception as err:
-        logging.exception(err)
 
 
 def parse_generator(log):
@@ -92,8 +93,6 @@ def parse_generator(log):
         logging.error("ValueError")
     except IndexError:
         logging.error("IndexError")
-    except Exception as err:
-        logging.exception(err)
 
 
 def statistic_urls(urls, config):
@@ -132,14 +131,16 @@ def statistic_urls(urls, config):
         logging.error("ValueError")
     except IndexError:
         logging.error("IndexError")
-    except Exception as err:
-        logging.exception(err)
 
 
 def main():
     logging.info("Run def main()")
     try:
         data_log = search_log(config)
+        for f in os.listdir(config["REPORT_DIR"]):
+            if str(data_log.date.strftime("%Y.%m.%d")) in f:
+                logging.error("Report with this date already exists")
+                sys.exit(1)
         urls = {}
         with gzip.open(data_log.full_path, 'rb') if data_log.extension == '.gz' else open(
                 data_log.full_path, 'r', encoding="utf-8") as log:
@@ -147,7 +148,7 @@ def main():
                 urls.update({url: statistic})
         sort_list_urls = statistic_urls(urls, config)
         table_json = json.dumps(sort_list_urls)
-        d = dict(table_json=table_json)
+        d = {"table_json": table_json}
         with open(os.path.join(config["REPORT_DIR"], 'report.html'), "r", encoding="utf-8") as file:
             text = file.read()
             t = Template(text)
@@ -158,6 +159,12 @@ def main():
         logging.error("ValueError")
     except IndexError:
         logging.error("IndexError")
+    except EOFError:
+        logging.error("EOFError")
+    except FileExistsError:
+        logging.error("FileExistsError")
+    except FileNotFoundError:
+        logging.error("FileNotFoundError")
     except Exception as err:
         logging.exception(err)
 
