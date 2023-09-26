@@ -54,7 +54,7 @@ def search_log(config):
                 dt_int = re.search(r'\d{8}', f)
                 if int(dt_int[0]) > dt:
                     dt = int(dt_int[0])
-                    full_path = os.path.join(path, f)
+                    full_path = os.path.join(path, f).replace("\\", "/")
                     extension = os.path.splitext(f)[1]
         dt = datetime.datetime.strptime(str(dt), '%Y%m%d')
         f_log = namedtuple('f_log', 'full_path date extension')
