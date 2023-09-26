@@ -20,4 +20,4 @@ jobs:
           python test_log_analyzer.py
       - name: Analysing the code with pylint
         run: |
-          pylint [--disable=line-too-long] log_analyzer.py
+          pylint --disable=line-too-long log_analyzer.py
