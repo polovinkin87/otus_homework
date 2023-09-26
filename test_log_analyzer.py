@@ -11,8 +11,8 @@ class MyTestClass(unittest.TestCase):
     def test_search_log(self):
         config = {"LOG_DIR": "./log"}
         f_log = namedtuple('f_log', 'full_path date extension')
-        self.assertEqual(search_log(config), f_log(full_path='./log\\nginx-access-ui.log-20170630.gz',
-                                                   date=datetime.datetime.strptime('20170630', '%Y%m%d'),
+        self.assertEqual(search_log(config), f_log(full_path='./log\\nginx-access-ui.log-20230630.gz',
+                                                   date=datetime.datetime.strptime('20230630', '%Y%m%d'),
                                                    extension='.gz'))
 
     @unittest.skip("demonstrating skipping")
