@@ -20,4 +20,4 @@ jobs:
           python test_log_analyzer.py
       - name: Analysing the code with pylint
         run: |
-          pylint --disable=line-too-long,invalid-name,missing-module-docstring,missing-function-docstring log_analyzer.py
+          pylint --disable=broad-exception-caught log_analyzer.py
